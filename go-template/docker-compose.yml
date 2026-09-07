@@ -1,0 +1,25 @@
+services:
+  {{APP_NAME}}:
+    image: {{APP_NAME}}:local
+    build:
+      dockerfile: docker/Dockerfile
+    ports:
+      - "{{PORT}}:{{PORT}}"
+    privileged: false
+    user: app-user
+    read_only: false
+    environment:
+      PORT: {{PORT}}
+      PREFIX: {{URL_PREFIX}}
+      HEALTHCHECK: {{URL_PREFIX}}/health-check
+      SIRIUS_PUBLIC_URL: http://localhost:8080
+      BACKEND_URL: http://{{SERVICE_NAME}}-api:7171
+      JWT_SECRET: mysupersecrettestkeythatis128bits
+
+  watch-assets:
+    image: node:24-alpine3.23@sha256:244cc2b53f46f9e876304391d17682b0ddae9ac33491f4857e25e35a36ba7995
+    working_dir: /home/node/app
+    entrypoint: ["sh"]
+    volumes:
+      - ./:/home/node/app
+      - watch-assets-node-modules:/home/node/app/node_modules
