@@ -4,25 +4,20 @@
 
 - [Go](https://golang.org/) (1.26.x)
 - [docker compose](https://docs.docker.com/compose/install/) (>= 2.26.0)
-- [Yarn](https://yarnpkg.com/) for frontend assets
 
+#### Installing dependencies locally:
+(This is only necessary if running without docker)
 
-## Local development
+- `npm install`
+- `go mod download`
 
-Build frontend assets and start the application:
+---
 
-```zsh
-yarn install --frozen-lockfile
-yarn build
-make up
-```
-
+#### Local development
 The application is available at `http://localhost:{{PORT}}{{URL_PREFIX}}/`.
 
 To enable debugging and hot-reloading of Go files:
 
-```zsh
-make dev-up
-```
+`make dev-up`
 
-Hot-reloading is managed by Air.
+Hot-reloading for web assets (JS, CSS, etc.) is provided via an npm watch command.

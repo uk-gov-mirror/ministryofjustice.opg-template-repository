@@ -2,11 +2,11 @@ services:
   {{APP_NAME}}:
     image: {{APP_NAME}}:local
     build:
-      context: .
       dockerfile: docker/Dockerfile
-      target: prod
     ports:
       - "{{PORT}}:{{PORT}}"
+    privileged: false
+    user: app-user
     read_only: false
     environment:
       PORT: {{PORT}}
@@ -16,15 +16,10 @@ services:
       BACKEND_URL: http://{{SERVICE_NAME}}-api:7171
       JWT_SECRET: mysupersecrettestkeythatis128bits
 
-  yarn:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: asset-env
-    working_dir: /app
-    entrypoint: ["yarn"]
-    command: build
+  watch-assets:
+    image: node:24-alpine3.23@sha256:244cc2b53f46f9e876304391d17682b0ddae9ac33491f4857e25e35a36ba7995
+    working_dir: /home/node/app
+    entrypoint: ["sh"]
     volumes:
-      - ./web:/app/web
-      - ./package.json:/app/package.json
-      - ./yarn.lock:/app/yarn.lock
+      - ./:/home/node/app
+      - watch-assets-node-modules:/home/node/app/node_modules

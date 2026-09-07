@@ -3,7 +3,6 @@ services:
     build:
       target: dev
     ports:
-      - "{{PORT}}:{{PORT}}"
       - "2345:2345"
     volumes:
       - ./.air.toml:/app/.air.toml
@@ -14,5 +13,5 @@ services:
       - ./web/static:/app/web/static
       - ./web/template:/app/web/template
 
-	yarn:
-	 command: watch
+    watch-assets:
+      command: -lc "apk add --no-cache git && npm ci --ignore-scripts && npm run watch"

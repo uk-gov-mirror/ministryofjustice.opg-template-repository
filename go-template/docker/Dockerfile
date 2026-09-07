@@ -23,10 +23,11 @@ RUN mkdir -p web/static
 
 COPY web/assets web/assets
 COPY package.json .
-COPY yarn.lock .
+COPY .npmrc .
 
-RUN yarn install --frozen-lockfile --ignore-scripts
-RUN yarn build
+RUN apk add --no-cache git
+RUN npm ci --ignore-scripts
+RUN npm run build
 
 FROM base AS healthcheck-build
 WORKDIR /app
